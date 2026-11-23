@@ -1,72 +1,724 @@
 <!doctype html>
-<html class="light scroll-smooth" lang="en">
+<html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Saiyiram | Creative Developer &amp; AI Researcher</title>
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Saiyiram — Second-year Computer Science undergraduate at the University of Jaffna."
+    />
+    <title>Saiyiram</title>
+
+    <!-- Typography: Inter & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&amp;family=Plus+Jakarta+Sans:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400&amp;display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
-      rel="stylesheet"
-    />
-    <script>
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            colors: {
-              primary: "#2563eb",
-              "primary-dark": "#1e40af",
-              "primary-light": "#dbeafe",
-              "off-white": "#fcfcfd",
-              "slate-custom": "#0f172a",
-            },
-            fontFamily: {
-              sans: ["Plus Jakarta Sans", "sans-serif"],
-              serif: ["Playfair Display", "serif"],
-              mono: ["JetBrains Mono", "monospace"],
-            },
-          },
-        },
-      };
-    </script>
-    <style type="text/tailwindcss">
-      @layer base {
-        body {
-          @apply bg-off-white text-slate-custom selection:bg-primary-light selection:text-primary-dark;
+
+    <style>
+      /* ==========================================================================
+       DESIGN TOKENS & RESET
+       Swiss-editorial, technical documentation aesthetic.
+       ========================================================================== */
+      :root {
+        --bg-primary: #fafafa;
+        --bg-surface: #ffffff;
+        --text-primary: #18181b;
+        --text-secondary: #52525b;
+        --text-muted: #71717a;
+        --border-hairline: #e4e4e7;
+        --accent-cobalt: #1d4ed8;
+
+        --font-sans:
+          "Inter", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+        --font-mono:
+          "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+        --container-max: 760px;
+        --space-section: 4.5rem;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html {
+        background-color: var(--bg-primary);
+        color: var(--text-primary);
+        font-family: var(--font-sans);
+        font-size: 16px;
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        scroll-behavior: auto;
+      }
+
+      body {
+        min-height: 100vh;
+        padding: 0 1.25rem;
+      }
+
+      /* ==========================================================================
+       LAYOUT CONTAINER
+       Single-column centered layout (max-width: 760px), left-aligned text.
+       ========================================================================== */
+      .container {
+        width: 100%;
+        max-width: var(--container-max);
+        margin: 0 auto;
+      }
+
+      /* ==========================================================================
+       LINKS & INTERACTIONS
+       Strict 150ms color/underline transitions on hover only.
+       ========================================================================== */
+      a {
+        color: var(--accent-cobalt);
+        text-decoration: none;
+        border-bottom: 1px solid transparent;
+        transition:
+          color 150ms ease,
+          border-color 150ms ease;
+      }
+
+      a:hover,
+      a:focus-visible {
+        border-bottom-color: var(--accent-cobalt);
+        outline: none;
+      }
+
+      /* ==========================================================================
+       HEADER & NAVIGATION
+       Left-aligned full name; right-aligned plain text links.
+       Responsive down to 360px without a hamburger menu.
+       ========================================================================== */
+      header {
+        padding: 3rem 0 2.5rem;
+        border-bottom: 1px solid var(--border-hairline);
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 1rem 1.5rem;
+      }
+
+      .site-name {
+        font-size: 1.125rem;
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        color: var(--text-primary);
+        border-bottom: none;
+      }
+
+      .site-name:hover {
+        border-bottom: none;
+        color: var(--text-primary);
+      }
+
+      nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.875rem 1.25rem;
+      }
+
+      nav a {
+        font-size: 0.9375rem;
+        color: var(--text-secondary);
+      }
+
+      nav a:hover,
+      nav a:focus-visible {
+        color: var(--accent-cobalt);
+        border-bottom-color: var(--accent-cobalt);
+      }
+
+      /* ==========================================================================
+       INTRO SECTION
+       Direct engineering summary without hero banners or avatars.
+       ========================================================================== */
+      .intro {
+        padding: 3.5rem 0 0;
+      }
+
+      .intro p {
+        font-size: 1.0625rem;
+        line-height: 1.65;
+        color: var(--text-primary);
+        max-width: 68ch;
+      }
+
+      .intro p + p {
+        margin-top: 1rem;
+      }
+
+      /* ==========================================================================
+       SECTION HEADINGS & STRUCTURE
+       ========================================================================== */
+      section {
+        margin-bottom: var(--space-section);
+      }
+
+      .section-title {
+        font-family: var(--font-mono);
+        font-size: 0.8125rem;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--text-muted);
+        margin-bottom: 1.5rem;
+      }
+
+      /* ==========================================================================
+       SELECTED PROJECTS
+       Vertical list separated by 1px solid #E4E4E7 horizontal borders.
+       ========================================================================== */
+      .project-list {
+        border-top: 1px solid var(--border-hairline);
+      }
+
+      .project-item {
+        padding: 2rem 0;
+        border-bottom: 1px solid var(--border-hairline);
+      }
+
+      .project-header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 0.5rem 1rem;
+        margin-bottom: 0.625rem;
+      }
+
+      .project-title {
+        font-size: 1.0625rem;
+        font-weight: 600;
+        letter-spacing: -0.015em;
+        color: var(--text-primary);
+      }
+
+      .project-links {
+        display: flex;
+        gap: 0.875rem;
+        font-family: var(--font-mono);
+        font-size: 0.8125rem;
+      }
+
+      .project-description {
+        color: var(--text-secondary);
+        margin-bottom: 1rem;
+      }
+
+      .project-bullets {
+        list-style-type: disc;
+        padding-left: 1.25rem;
+        margin-bottom: 1.125rem;
+        color: var(--text-primary);
+      }
+
+      .project-bullets li {
+        margin-bottom: 0.5rem;
+        padding-left: 0.25rem;
+      }
+
+      .project-bullets li::marker {
+        color: var(--text-muted);
+      }
+
+      .project-stack {
+        font-family: var(--font-mono);
+        font-size: 0.8125rem;
+        color: var(--text-muted);
+      }
+
+      /* ==========================================================================
+       CHRONOLOGICAL ROWS (EXPERIENCE, EDUCATION, HONORS)
+       Left-aligned monospace dates, right-aligned role/institution details.
+       ========================================================================== */
+      .timeline-list {
+        border-top: 1px solid var(--border-hairline);
+      }
+
+      .timeline-row {
+        display: grid;
+        grid-template-columns: 165px 1fr;
+        gap: 0.5rem 1.5rem;
+        padding: 1.625rem 0;
+        border-bottom: 1px solid var(--border-hairline);
+      }
+
+      .timeline-date {
+        font-family: var(--font-mono);
+        font-size: 0.8125rem;
+        color: var(--text-muted);
+        padding-top: 0.15rem;
+      }
+
+      .timeline-role {
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        letter-spacing: -0.01em;
+      }
+
+      .timeline-org {
+        font-size: 0.9375rem;
+        color: var(--text-secondary);
+        margin-bottom: 0.5rem;
+      }
+
+      .timeline-desc {
+        font-size: 0.9375rem;
+        color: var(--text-secondary);
+      }
+
+      /* ==========================================================================
+       WRITING / TECHNICAL NOTES
+       Minimal index with monospace dates and direct links.
+       ========================================================================== */
+      .writing-list {
+        border-top: 1px solid var(--border-hairline);
+      }
+
+      .writing-row {
+        display: grid;
+        grid-template-columns: 165px 1fr;
+        gap: 0.375rem 1.5rem;
+        padding: 1.125rem 0;
+        border-bottom: 1px solid var(--border-hairline);
+        align-items: baseline;
+      }
+
+      .writing-date {
+        font-family: var(--font-mono);
+        font-size: 0.8125rem;
+        color: var(--text-muted);
+      }
+
+      .writing-link {
+        font-size: 0.9375rem;
+        font-weight: 500;
+        color: var(--text-primary);
+        justify-self: start;
+      }
+
+      .writing-link:hover,
+      .writing-link:focus-visible {
+        color: var(--accent-cobalt);
+        border-bottom-color: var(--accent-cobalt);
+      }
+
+      /* ==========================================================================
+       FOOTER
+       Simple 1px solid top border, direct mailto and plain text links.
+       ========================================================================== */
+      footer {
+        border-top: 1px solid var(--border-hairline);
+        padding: 2.5rem 0 4rem;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem 1.5rem;
+        font-size: 0.9375rem;
+      }
+
+      .footer-email {
+        font-family: var(--font-mono);
+        font-size: 0.875rem;
+      }
+
+      .footer-links {
+        display: flex;
+        gap: 1.25rem;
+      }
+
+      .footer-links a {
+        color: var(--text-secondary);
+      }
+
+      .footer-links a:hover,
+      .footer-links a:focus-visible {
+        color: var(--accent-cobalt);
+        border-bottom-color: var(--accent-cobalt);
+      }
+
+      /* ==========================================================================
+       RESPONSIVE BREAKPOINTS (DOWN TO 360PX MOBILE)
+       ========================================================================== */
+      @media (max-width: 600px) {
+        :root {
+          --space-section: 3.5rem;
+        }
+
+        header {
+          padding: 2.25rem 0 1.75rem;
+        }
+
+        .intro {
+          padding: 2.5rem 0 0;
+        }
+
+        .timeline-row,
+        .writing-row {
+          grid-template-columns: 1fr;
+          gap: 0.25rem;
+        }
+
+        .timeline-date,
+        .writing-date {
+          margin-bottom: 0.125rem;
         }
       }
-      .organic-blob {
-        border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+
+      :root {
+        --bg-primary: #fafafa;
+        --text-primary: #18181b;
+        --text-muted: #71717a;
+        --border-hairline: #e4e4e7;
+        --font-mono:
+          "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+        --container-max: 760px;
       }
-      .floating-shape {
-        @apply absolute pointer-events-none opacity-20 dark:opacity-10;
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
       }
-      .text-outline {
-        -webkit-text-stroke: 1px currentColor;
-        color: transparent;
+
+      .ascii-pet {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        line-height: 1.25;
+        color: var(--text-muted);
+        cursor: pointer;
+        user-select: none;
+        padding: 0.5rem 0.75rem;
+        border-left: 1px solid var(--border-hairline);
+        transition:
+          bottom 600ms ease-in-out,
+          right 600ms ease-in-out,
+          left 600ms ease-in-out,
+          color 200ms ease;
       }
-      .glass-card {
-        @apply bg-white/70 backdrop-blur-md border border-white/20 shadow-xl;
+
+      .ascii-pet:hover {
+        color: var(--text-primary);
+      }
+
+      .ascii-pet pre {
+        font-family: inherit;
+        margin-bottom: 0.35rem;
+      }
+
+      .ascii-pet-status {
+        font-size: 0.6875rem;
+        letter-spacing: 0.02em;
+      }
+
+      @media (max-width: 1180px) {
+        .ascii-pet {
+          display: none;
+        }
       }
     </style>
-    <script type="importmap">
-      {
-        "imports": {
-          "react/": "https://esm.sh/react@^19.2.4/",
-          "react": "https://esm.sh/react@^19.2.4",
-          "react-dom/": "https://esm.sh/react-dom@^19.2.4/"
-        }
-      }
-    </script>
-    <!-- <link rel="stylesheet" href="/index.css"> -->
   </head>
-  <body class="antialiased overflow-x-hidden">
-    <div id="root"></div>
-    <script type="module" src="/index.tsx"></script>
+  <body>
+    <div class="container">
+      <!-- ====================================================================
+         HEADER
+         ==================================================================== -->
+      <header>
+        <a href="#" class="site-name">Saiyiram</a>
+        <nav aria-label="Primary Navigation">
+          <a href="#projects">Projects</a>
+          <a href="#experience">Experience</a>
+          <a href="#honors">Honors</a>
+          <a href="#writing">Writing</a>
+          <a
+            href="https://github.com/saiyiram"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub</a
+          >
+        </nav>
+      </header>
+
+      <main>
+        <!-- ==================================================================
+           INTRO SECTION
+           ================================================================== -->
+        <section class="intro" aria-label="Introduction">
+          <p>
+            Second-year Computer Science undergraduate at the University of
+            Jaffna focusing on distributed systems, backend engineering, and
+            practical software products.
+          </p>
+          <p>
+            Founder of Fix My Semester (a student productivity platform scaled
+            to 174 active university users) and competitive programmer. Seeking
+            Software Engineering internships and full-time roles for 2027.
+          </p>
+        </section>
+
+        <!-- ==================================================================
+           SELECTED PROJECTS
+           ================================================================== -->
+        <section id="projects" aria-labelledby="projects-heading">
+          <h2 id="projects-heading" class="section-title">Selected Projects</h2>
+
+          <div class="project-list">
+            <!-- Project 1: Fix My Semester -->
+            <article class="project-item">
+              <div class="project-header">
+                <h3 class="project-title">Fix My Semester</h3>
+                <div class="project-links">
+                  <a
+                    href="https://play.google.com/store/apps/details?id=com.saiyi.fixmysemester"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >[Live]</a
+                  >
+                </div>
+              </div>
+              <p class="project-description">
+                A mobile productivity and academic planning application built to
+                help university students track coursework deadlines, GPA
+                targets, and weekly study schedules.
+              </p>
+              <ul class="project-bullets">
+                <li>
+                  Scaled to 174 active university student users between June
+                  2026 and November 2026, managing real-time schedule syncing
+                  and deadline notifications.
+                </li>
+                <li>
+                  Designed an offline-first local storage architecture with
+                  background cloud reconciliation to maintain responsiveness on
+                  low-bandwidth mobile connections.
+                </li>
+              </ul>
+              <div class="project-stack">
+                React Native · TypeScript · Node.js · PostgreSQL
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <!-- ==================================================================
+           EXPERIENCE & EDUCATION
+           ================================================================== -->
+        <section id="experience" aria-labelledby="experience-heading">
+          <h2 id="experience-heading" class="section-title">
+            Experience &amp; Education
+          </h2>
+
+          <div class="timeline-list">
+            <div class="timeline-row">
+              <div class="timeline-date">Jun 2026 – Nov 2026</div>
+              <div>
+                <div class="timeline-role">Founder &amp; Lead Engineer</div>
+                <div class="timeline-org">
+                  Fix My Semester (Independent Mobile Startup)
+                </div>
+                <p class="timeline-desc">
+                  Built, shipped, and operated a student productivity mobile
+                  application reaching 174 active users; led product
+                  architecture, backend API development, user feedback
+                  iterations, and production deployment.
+                </p>
+              </div>
+            </div>
+
+            <div class="timeline-row">
+              <div class="timeline-date">2025 – Present</div>
+              <div>
+                <div class="timeline-role">
+                  B.Sc. (Hons) in Computer Science
+                </div>
+                <div class="timeline-org">University of Jaffna</div>
+                <p class="timeline-desc">
+                  Relevant coursework: Software Engineering, Operating Systems,
+                  Database Management Systems, Data Structures &amp; Algorithms,
+                  Computer Networks.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================================================================
+           COMPETITIONS & HONORS
+           ================================================================== -->
+        <section id="honors" aria-labelledby="honors-heading">
+          <h2 id="honors-heading" class="section-title">
+            Competitions &amp; Honors
+          </h2>
+
+          <div class="timeline-list">
+            <div class="timeline-row">
+              <div class="timeline-date">2026</div>
+              <div>
+                <div class="timeline-role">
+                  6th Place — Codefest Algothon 2026
+                </div>
+                <div class="timeline-org">
+                  SLIIT · National Algorithmic Programming Competition
+                </div>
+              </div>
+            </div>
+
+            <div class="timeline-row">
+              <div class="timeline-date">2026</div>
+              <div>
+                <div class="timeline-role">10th Place — UoJ Coders 2026</div>
+                <div class="timeline-org">
+                  University of Jaffna · Inter-University Coding Competition
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================================================================
+           WRITING
+           ================================================================== -->
+        <section id="writing" aria-labelledby="writing-heading">
+          <h2 id="writing-heading" class="section-title">Writing</h2>
+
+          <div class="writing-list">
+            <article class="writing-row">
+              <time class="writing-date" datetime="2026-08">Aug 2026</time>
+              <a
+                href="https://medium.com/@bsaiyiram/my-thoughts-on-misinformation-disinformation-as-a-cs-student-dd1e2757bed4"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="writing-link"
+              >
+                My Thoughts on Misinformation & Disinformation as a CS Student
+              </a>
+            </article>
+            <article class="writing-row">
+              <time class="writing-date" datetime="2026-07">Jul 2026</time>
+              <a
+                href="https://medium.com/@bsaiyiram/how-wsl-helped-me-to-work-with-linux-into-windows-4d85e9f44ed3"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="writing-link"
+              >
+                How WSL helped me to work with Linux into Windows
+              </a>
+            </article>
+            <article class="writing-row">
+              <time class="writing-date" datetime="2026-01">Jan 2026</time>
+              <a
+                href="https://medium.com/@bsaiyiram/classical-computing-devices-explained-in-my-words-4dad83bd8b04"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="writing-link"
+              >
+                Classical Computing Devices - Explained in My Words
+              </a>
+            </article>
+          </div>
+        </section>
+      </main>
+
+      <!-- ====================================================================
+         FOOTER
+         ==================================================================== -->
+      <footer>
+        <a href="mailto:bsaiyiram@gmail.com" class="footer-email"
+          >bsaiyiram@gmail.com</a
+        >
+        <div class="footer-links">
+          <a
+            href="https://github.com/saiyiram"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub</a
+          >
+          <a
+            href="https://linkedin.com/in/saiyiram/"
+            target="_blank"
+            rel="noopener noreferrer"
+            >LinkedIn</a
+          >
+        </div>
+      </footer>
+    </div>
+    <div class="ascii-pet" id="ascii-pet" title="Click to pet">
+      <pre id="pet-art">
+ /\_/\
+( o.o )
+ > ^ <</pre
+      >
+      <div class="ascii-pet-status" id="pet-status">status: idle</div>
+    </div>
+
+    <script>
+      (() => {
+        const pet = document.getElementById("ascii-pet");
+        const art = document.getElementById("pet-art");
+        const status = document.getElementById("pet-status");
+        if (!pet) return;
+
+        const frames = {
+          idle: " /\\_/\\\n( o.o )\n > ^ <",
+          blink: " /\\_/\\\n( -.- )\n > ^ <",
+          scroll: " /\\_/\\\n( O.O )\n > ^ <",
+          happy: " /\\_/\\\n( ^.^ )\n > ~ <",
+          eof: " /\\_/\\\n( u.u ) zZ\n > ^ <",
+        };
+
+        let timer;
+        const setState = (state, label, resetMs = 1800) => {
+          art.textContent = frames[state];
+          status.textContent = label;
+          clearTimeout(timer);
+          if (resetMs) {
+            timer = setTimeout(() => {
+              art.textContent = frames.idle;
+              status.textContent = "status: idle";
+            }, resetMs);
+          }
+        };
+
+        setInterval(() => {
+          if (status.textContent === "status: idle") {
+            setState("blink", "status: idle", 220);
+          }
+        }, 4500);
+
+        window.addEventListener(
+          "scroll",
+          () => {
+            const atBottom =
+              window.innerHeight + window.scrollY >=
+              document.body.offsetHeight - 20;
+            if (atBottom) {
+              setState("eof", "EOF: thanks for reading", 0);
+            } else {
+              setState("scroll", "reading...", 900);
+            }
+          },
+          { passive: true },
+        );
+
+        pet.addEventListener("click", () => {
+          setState("happy", "purr.exe running", 2000);
+        });
+      })();
+    </script>
   </body>
 </html>
